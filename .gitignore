@@ -3,3 +3,17 @@
 ################################################################################
 
 /.vs
+/xLiAd.ProjectFactory.Core/bin/Debug/netstandard2.0
+/xLiAd.ProjectFactory.Core/obj
+/xLiAd.ProjectFactory.Core.Test/bin/Debug/net461
+/xLiAd.ProjectFactory.Core.Test/obj
+/xLiAd.ProjectFactory.Winform/bin/Debug
+/xLiAd.ProjectFactory.Winform/obj/Debug
+/xLiAdProjectTemplate.Entities/bin/Debug/netcoreapp3.1
+/xLiAdProjectTemplate.Entities/obj
+/xLiAdProjectTemplate.Infrastructure/bin/Debug/netcoreapp3.1
+/xLiAdProjectTemplate.Infrastructure/obj
+/xLiAdProjectTemplate.Services/bin/Debug/netcoreapp3.1
+/xLiAdProjectTemplate.Services/obj
+/xLiAdProjectTemplate.WebApp/bin/Debug/netcoreapp3.1
+/xLiAdProjectTemplate.WebApp/obj

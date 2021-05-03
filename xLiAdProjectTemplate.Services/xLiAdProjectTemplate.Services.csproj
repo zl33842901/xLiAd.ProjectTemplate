@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+    <PackageReference Include="Polly" Version="7.2.1" />
+    <PackageReference Include="xLiAd.DiagnosticLogCenter" Version="1.0.2" />
+    <PackageReference Include="xLiAd.Limiter.Memory" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\xLiAdProjectTemplate.Infrastructure\xLiAdProjectTemplate.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
