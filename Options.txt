@@ -1,0 +1,85 @@
+﻿{
+  "Items": [
+    {
+      "OptionCode": "SqlType",
+      "OptionDescription": "请选择数据库类型",
+      "Type": 1,
+      "Options": [
+        {
+          "ItemName": "SqlServer",
+          "IsDefault": true,
+          "ChangeDetails": null
+        },
+        {
+          "ItemName": "MySql",
+          "IsDefault": false,
+          "ChangeDetails": [
+            {
+              "FileName": "xLiAdProjectTemplate.WebApp.csproj",
+              "OldeValue": "xLiAd.Gaia.SqlServer",
+              "NewValue": "xLiAd.Gaia.MySql"
+            },
+            {
+              "FileName": "xLiAdProjectTemplate.Infrastructure.csproj",
+              "OldeValue": "xLiAd.DapperEx.Repository",
+              "NewValue": "xLiAd.DapperEx.RepositoryMysql"
+            },
+            {
+              "FileName": "Startup.cs",
+              "OldeValue": "AddGaiaWithSqlServer",
+              "NewValue": "AddGaiaWithMySql"
+            },
+            {
+              "FileName": "Startup.cs",
+              "OldeValue": "new SqlConnection",
+              "NewValue": "new MySql.Data.MySqlClient.MySqlConnection"
+            },
+            {
+              "FileName": "AuthRoleRepository.cs",
+              "OldeValue": " Repository<AuthRole>",
+              "NewValue": " RepositoryMysql<AuthRole>"
+            },
+            {
+              "FileName": "AuthRoleRepository.cs",
+              "OldeValue": "using xLiAd.DapperEx.Repository;",
+              "NewValue": "using xLiAd.DapperEx.Repository;\r\nusing xLiAd.DapperEx.RepositoryMysql;"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "OptionCode": "SqlConn",
+      "OptionDescription": "请输入数据库连接串",
+      "Type": 2,
+      "Options": [
+        {
+          "ItemName": "server=127.0.0.1;user id=sa;password=zhanglei;database=OKR;Max Pool Size=300;",
+          "IsDefault": true,
+          "ChangeDetails": null
+        },
+        {
+          "ItemName": "server=127.0.0.1;user id=root;password=zhanglei;database=okr;CharSet=utf8mb4;Convert Zero Datetime=true;Allow Zero Datetime=true",
+          "IsDefault": false,
+          "ChangeDetails": [
+            {
+              "FileName": "appsettings.Development.json",
+              "OldeValue": "server=127.0.0.1;user id=sa;password=zhanglei;database=OKR;Max Pool Size=300;",
+              "NewValue": "$"
+            },
+            {
+              "FileName": "appsettings.Production.json",
+              "OldeValue": "server=127.0.0.1;user id=sa;password=zhanglei;database=OKR;Max Pool Size=300;",
+              "NewValue": "$"
+            },
+            {
+              "FileName": "appsettings.Staging.json",
+              "OldeValue": "server=127.0.0.1;user id=sa;password=zhanglei;database=OKR;Max Pool Size=300;",
+              "NewValue": "$"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

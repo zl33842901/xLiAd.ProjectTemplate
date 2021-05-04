@@ -1,5 +1,4 @@
-﻿@inject xLiAdProjectTemplate.Entities.Dtos.IConfigEntity conf
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
@@ -29,7 +28,7 @@
                 </div>
                 <div class="author">
                     <i class="el-icon-goods" style="margin:0 10px 0 0;"><span style="padding-left:5px;">模板项目</span></i>
-                    <i class="el-icon-close" style="margin:0 10px 0 0;"><span style="padding-left:5px;cursor:pointer;" onclick="location = '@(conf.LoginUrl + "?gourl=")'+document.location.href;">退出</span></i>
+                    <i class="el-icon-close" style="margin:0 10px 0 0;"><span style="padding-left:5px;cursor:pointer;" v-if="false">退出</span></i>
                 </div>
             </el-header>
 
@@ -69,24 +68,11 @@
         @RenderSection("Dialogs", required: false)
     </div>
     <script type="text/javascript">
-        var LoginUrlConfig = '@conf.LoginUrl';
+        var LoginUrlConfig = '';
         var Menus = [
-            {
-                name: "职能角色中心",
-                id: "DataDataiiAuthRole",
-                iconClass: "el-icon-date",
-                children: [
-                    {
-                        name: "职能角色设置",
-                        id: "AuthRole",
-                        children: [
-                            { name: "职能角色设置", id: "AuthRole", url: "/AuthRole/Index" }
-                        ]
-                    }
-                ]
-            }
+            
         ];
-        var ExcelExportUrl = "@conf.ExcelExportUrl";
+        var ExcelExportUrl = "";
     </script>
     @RenderSection("Scripts", required: false)
 </body>

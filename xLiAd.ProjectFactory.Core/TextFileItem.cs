@@ -1,16 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace xLiAd.ProjectFactory.Core
 {
     public class TextFileItem : FileItem
     {
-        public TextFileItem(string fileFullName, byte[] content) : base(fileFullName, content) { }
+        private readonly Encoding encoding;
+        public TextFileItem(string fileFullName, byte[] content) : base(fileFullName, content)
+        {
+            MemoryStream ms = new MemoryStream(content);
+            ms.Seek(0, SeekOrigin.Begin);
+            encoding = TextEncoder.GetEncoding(ms);
+        }
 
         public string GetText()
         {
-            return System.Text.Encoding.UTF8.GetString(Content);
+            return encoding.GetString(Content);
         }
     }
 }

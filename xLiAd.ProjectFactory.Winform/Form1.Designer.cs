@@ -37,13 +37,19 @@ namespace xLiAd.ProjectFactory.Winform
             this.BtnBorn = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.BtnBrowser = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.RbSqlServer = new System.Windows.Forms.RadioButton();
+            this.RbMySql = new System.Windows.Forms.RadioButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TbConn = new System.Windows.Forms.TextBox();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TbSolutionName
             // 
             this.TbSolutionName.Location = new System.Drawing.Point(108, 25);
             this.TbSolutionName.Name = "TbSolutionName";
-            this.TbSolutionName.Size = new System.Drawing.Size(238, 21);
+            this.TbSolutionName.Size = new System.Drawing.Size(363, 21);
             this.TbSolutionName.TabIndex = 0;
             // 
             // label1
@@ -60,7 +66,7 @@ namespace xLiAd.ProjectFactory.Winform
             this.CbInSubFolder.AutoSize = true;
             this.CbInSubFolder.Checked = true;
             this.CbInSubFolder.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.CbInSubFolder.Location = new System.Drawing.Point(238, 97);
+            this.CbInSubFolder.Location = new System.Drawing.Point(363, 58);
             this.CbInSubFolder.Name = "CbInSubFolder";
             this.CbInSubFolder.Size = new System.Drawing.Size(108, 16);
             this.CbInSubFolder.TabIndex = 2;
@@ -86,9 +92,9 @@ namespace xLiAd.ProjectFactory.Winform
             // 
             // BtnBorn
             // 
-            this.BtnBorn.Location = new System.Drawing.Point(384, 25);
+            this.BtnBorn.Location = new System.Drawing.Point(504, 25);
             this.BtnBorn.Name = "BtnBorn";
-            this.BtnBorn.Size = new System.Drawing.Size(105, 88);
+            this.BtnBorn.Size = new System.Drawing.Size(102, 50);
             this.BtnBorn.TabIndex = 4;
             this.BtnBorn.Text = "生成";
             this.BtnBorn.UseVisualStyleBackColor = true;
@@ -104,11 +110,64 @@ namespace xLiAd.ProjectFactory.Winform
             this.BtnBrowser.UseVisualStyleBackColor = true;
             this.BtnBrowser.Click += new System.EventHandler(this.BtnBrowser_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.TbConn);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.RbMySql);
+            this.panel1.Controls.Add(this.RbSqlServer);
+            this.panel1.Location = new System.Drawing.Point(12, 81);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(594, 81);
+            this.panel1.TabIndex = 6;
+            // 
+            // RbSqlServer
+            // 
+            this.RbSqlServer.AutoSize = true;
+            this.RbSqlServer.Checked = true;
+            this.RbSqlServer.Location = new System.Drawing.Point(20, 14);
+            this.RbSqlServer.Name = "RbSqlServer";
+            this.RbSqlServer.Size = new System.Drawing.Size(77, 16);
+            this.RbSqlServer.TabIndex = 0;
+            this.RbSqlServer.TabStop = true;
+            this.RbSqlServer.Text = "SqlServer";
+            this.RbSqlServer.UseVisualStyleBackColor = true;
+            this.RbSqlServer.CheckedChanged += new System.EventHandler(this.RbSqlServer_CheckedChanged);
+            // 
+            // RbMySql
+            // 
+            this.RbMySql.AutoSize = true;
+            this.RbMySql.Location = new System.Drawing.Point(129, 14);
+            this.RbMySql.Name = "RbMySql";
+            this.RbMySql.Size = new System.Drawing.Size(53, 16);
+            this.RbMySql.TabIndex = 0;
+            this.RbMySql.Text = "MySql";
+            this.RbMySql.UseVisualStyleBackColor = true;
+            this.RbMySql.CheckedChanged += new System.EventHandler(this.RbMySql_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(20, 49);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 12);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "连接串：";
+            // 
+            // TbConn
+            // 
+            this.TbConn.Location = new System.Drawing.Point(79, 46);
+            this.TbConn.Name = "TbConn";
+            this.TbConn.Size = new System.Drawing.Size(489, 21);
+            this.TbConn.TabIndex = 2;
+            this.TbConn.Text = "server=127.0.0.1;user id=sa;password=zhanglei;database=OKR;Max Pool Size=300;";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(530, 147);
+            this.ClientSize = new System.Drawing.Size(621, 177);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.BtnBrowser);
             this.Controls.Add(this.BtnBorn);
             this.Controls.Add(this.TbTargetFolder);
@@ -120,6 +179,8 @@ namespace xLiAd.ProjectFactory.Winform
             this.Name = "Form1";
             this.Text = "张磊模板项目生成工具";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,6 +196,11 @@ namespace xLiAd.ProjectFactory.Winform
         private System.Windows.Forms.Button BtnBorn;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button BtnBrowser;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton RbMySql;
+        private System.Windows.Forms.RadioButton RbSqlServer;
+        private System.Windows.Forms.TextBox TbConn;
+        private System.Windows.Forms.Label label3;
     }
 }
 

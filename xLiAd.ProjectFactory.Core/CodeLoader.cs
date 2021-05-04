@@ -15,6 +15,7 @@ namespace xLiAd.ProjectFactory.Core
         private readonly string[] TextFileExtension = new string[] { ".cs", ".csproj", ".cshtml", ".json" };
         public string ProjectPre { get; }
         private readonly List<FileItem> fileItems;
+        public readonly Options.OptionsModel Options;
         public CodeLoader(string codeSolutionPath, string projectPre)
         {
             ProjectPre = projectPre;
@@ -33,6 +34,22 @@ namespace xLiAd.ProjectFactory.Core
             fileItems.AddRange(ProcessFolder(reposiFolder, $"/{ProjectPre}.Infrastructure"));
             fileItems.AddRange(ProcessFolder(servicFolder, $"/{ProjectPre}.Services"));
             fileItems.AddRange(ProcessFolder(webappFolder, $"/{ProjectPre}.WebApp"));
+            try
+            {
+                var ffn = Path.Combine(codeSolutionPath, "Options.txt");
+                if (File.Exists(ffn))
+                    using (FileStream fs = new FileStream(ffn, FileMode.Open))
+                    {
+                        var bs = new byte[fs.Length];
+                        fs.Read(bs, 0, bs.Length);
+                        var text = System.Text.Encoding.UTF8.GetString(bs);
+                        Options = Newtonsoft.Json.JsonConvert.DeserializeObject<Options.OptionsModel>(text.Substring(text.IndexOf('{')));
+                    }
+            }
+            catch(Exception ex)
+            {
+                Options = new Options.OptionsModel();
+            }
         }
 
         public IEnumerable<FileItem> FileItems => fileItems;

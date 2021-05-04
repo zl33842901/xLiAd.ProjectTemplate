@@ -1,0 +1,86 @@
+﻿<el-row style="padding:3px;margin:3px;">
+    <el-breadcrumb separator="/">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+    </el-breadcrumb>
+</el-row>
+
+<el-row style="width: 100%;margin: 5px 0 5px 0;background-color:#ddd;padding:4px 0 4px 0;" :gutter="10">
+    <el-row :gutter="10">
+        <el-col :span="5">请输入解决方案名称：</el-col>
+        <el-col :span="8"><el-input v-model="SolutionName"></el-input></el-col>
+    </el-row>
+    <el-row :gutter="10" v-for="(item, index) in tableData" style="height:38px;">
+        <el-col :span="5">{{item.OptionDescription}}</el-col>
+        <el-col :span="15">
+            <el-radio-group v-model="tableData[index].Input" v-if="tableData[index].Type==1" v-on:change="optionchanged(index)">
+                <el-radio :label="itm.ItemName" v-for="itm in item.Options">{{itm.ItemName}}</el-radio>
+            </el-radio-group>
+            <el-input v-model="tableData[index].Input" v-else></el-input>
+        </el-col>
+    </el-row>
+    <el-row :gutter="10">
+        <el-col :span="18">&nbsp;</el-col>
+        <el-col :span="8"><el-button v-on:click="DoConvert">生成解决方案</el-button></el-col>
+    </el-row>
+</el-row>
+
+@section Scripts{
+    <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                activeIndex: "activeIndex",
+                tableData: [],
+                SolutionName:'',
+                @await Html.PartialAsync("CommonData")
+            },
+            methods: {
+                @await Html.PartialAsync("CommonMethod")
+                GetData: function () {
+                    var that = this;
+                    CommonAjaxPost("/Home/GetOptionsConfig",
+                        {},
+                        function (data) {
+                            if (data.result) {
+                                that.tableData = data.data.Items;
+                                for (var i = 0; i < that.tableData.length; i++) {
+                                    if (that.tableData[i].Type == 1) {
+                                        that.tableData[i].Input = that.tableData[i].Options.filter(function (x) { return x.IsDefault; })[0].ItemName;
+                                    } else {
+                                        that.tableData[i].Input = that.tableData[i].Options.filter(function (x) { return x.IsDefault; })[0].ItemName;
+                                    }
+                                }
+                            } else {
+                                that.$message.error("出错了：" + data.message);
+                            }
+                        });
+                },
+                optionchanged: function (index) {
+                    Vue.set(this.tableData, index, this.tableData[index])
+                },
+                DoConvert: function () {
+                    var that = this;
+                    var t = [];
+                    for (var i = 0; i < that.tableData.length; i++) {
+                        t.push({
+                            OptionCode: that.tableData[i].OptionCode, SelectOrInput: that.tableData[i].Input
+                        });
+                    }
+                    JsonAjaxPost("/Home/DoConvert",
+                        { SolutionName: this.SolutionName, Items: t },
+                        function (data) {
+                            if (data.result) {
+                                that.$message("操作成功，稍候将下载。");
+                            } else {
+                                that.$message.error("出错了：" + data.message);
+                            }
+                        });
+                }
+            },
+            mounted: function () {
+                @await Html.PartialAsync("CommonMounted")
+                this.GetData();
+            }
+        });
+    </script>
+}

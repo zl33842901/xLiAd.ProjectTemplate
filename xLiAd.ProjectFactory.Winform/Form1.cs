@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using xLiAd.ProjectFactory.Core;
+using xLiAd.ProjectFactory.Core.Options;
 
 namespace xLiAd.ProjectFactory.Winform
 {
@@ -67,7 +68,23 @@ namespace xLiAd.ProjectFactory.Winform
             {
                 System.IO.Directory.CreateDirectory(ActureSaveFolder);
             }
-            var fileItems = convertService.Convert(TbSolutionName.Text);
+            OptionsSelect optionsSelect = new OptionsSelect()
+            {
+                Items = new OptionsSelectItem[]
+                {
+                    new OptionsSelectItem()
+                    {
+                        OptionCode = "SqlType",
+                        SelectOrInput = RbSqlServer.Checked ? "SqlServer" : "MySql"
+                    },
+                    new OptionsSelectItem()
+                    {
+                        OptionCode = "SqlConn",
+                        SelectOrInput = TbConn.Text
+                    }
+                }
+            };
+            var fileItems = convertService.Convert(TbSolutionName.Text, optionsSelect);
             foreach(var item in fileItems)
             {
                 var fullName = System.IO.Path.Combine(ActureSaveFolder, item.FileFullName.TrimStart('/'));
@@ -82,16 +99,41 @@ namespace xLiAd.ProjectFactory.Winform
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var solutionPath = System.Configuration.ConfigurationManager.AppSettings["SolutionPath"];
-            var projectPre = System.Configuration.ConfigurationManager.AppSettings["ProjectPre"];
-            codeLoader = new CodeLoader(solutionPath, projectPre);
-            convertService = new ConvertService(codeLoader);
+            try
+            {
+                var solutionPath = System.Configuration.ConfigurationManager.AppSettings["SolutionPath"];
+                var projectPre = System.Configuration.ConfigurationManager.AppSettings["ProjectPre"];
+                codeLoader = new CodeLoader(solutionPath, projectPre);
+                convertService = new ConvertService(codeLoader);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void BtnBrowser_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
                 TbTargetFolder.Text = folderBrowserDialog1.SelectedPath;
+        }
+
+        private void RbSqlServer_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RbSqlServer.Checked)
+            {
+                RbMySql.Checked = false;
+                TbConn.Text = "server=127.0.0.1;user id=sa;password=zhanglei;database=OKR;Max Pool Size=300;";
+            }
+        }
+
+        private void RbMySql_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RbMySql.Checked)
+            {
+                RbSqlServer.Checked = false;
+                TbConn.Text = "server=127.0.0.1;user id=root;password=zhanglei;database=okr;CharSet=utf8mb4;Convert Zero Datetime=true;Allow Zero Datetime=true";
+            }
         }
     }
 }
