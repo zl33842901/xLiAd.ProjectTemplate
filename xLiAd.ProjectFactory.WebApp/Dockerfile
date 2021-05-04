@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . ./
 ENV TZ=Asia/Shanghai
 RUN sed -i "s/TLSv1.2/TLSv1.0/g" /etc/ssl/openssl.cnf
-ENTRYPOINT ["dotnet", "xLiAdProjectTemplate.WebApp.dll"]
+ENTRYPOINT ["dotnet", "xLiAd.ProjectFactory.WebApp.dll"]

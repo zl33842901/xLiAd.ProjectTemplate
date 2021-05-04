@@ -21,3 +21,5 @@
 /xLiAd.ProjectFactory.Winform/obj/Release
 /xLiAd.ProjectFactory.WebApp/bin/Debug/netcoreapp3.1
 /xLiAd.ProjectFactory.WebApp/obj
+/xLiAd.ProjectFactory.Core/bin/Release/netstandard2.0
+/xLiAd.ProjectFactory.WebApp/bin

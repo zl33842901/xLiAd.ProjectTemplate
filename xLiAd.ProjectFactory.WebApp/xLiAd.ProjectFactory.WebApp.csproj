@@ -14,4 +14,10 @@
     <ProjectReference Include="..\xLiAd.ProjectFactory.Core\xLiAd.ProjectFactory.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
