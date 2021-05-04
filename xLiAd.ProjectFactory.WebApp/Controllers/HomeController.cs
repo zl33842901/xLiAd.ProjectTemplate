@@ -53,27 +53,41 @@ namespace xLiAd.ProjectFactory.WebApp.Controllers
             {
                 Items = dto.Items
             };
-            var fileItems = convertService.Convert(dto.SolutionName, optionsSelect);
-            using (MemoryStream zipToOpen = new MemoryStream())
+            try
             {
-                using(ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Create))
+                var fileItems = convertService.Convert(dto.SolutionName, optionsSelect);
+                using (MemoryStream zipToOpen = new MemoryStream())
                 {
-                    foreach (var item in fileItems)
+                    using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Create))
                     {
-                        var en = archive.CreateEntry(item.FileFullName.TrimStart('/'));
-                        using (var stream = en.Open())
-                            stream.Write(item.Content, 0, item.Content.Length);
+                        foreach (var item in fileItems)
+                        {
+                            var en = archive.CreateEntry(item.FileFullName.TrimStart('/'));
+                            using (var stream = en.Open())
+                                stream.Write(item.Content, 0, item.Content.Length);
+                        }
                     }
+                    if (!Directory.Exists(configModel.ZipSavePath))
+                        Directory.CreateDirectory(configModel.ZipSavePath);
+                    var fileName = $"{dto.SolutionName}.{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.zip";
+                    var fullName = Path.Combine(configModel.ZipSavePath, fileName);
+                    var bs = zipToOpen.ToArray();
+                    using (var fs = new FileStream(fullName, FileMode.Create))
+                        fs.Write(bs, 0, bs.Length);
+                    return ApiResultModel.FromData(fileName);
                 }
-                if (!Directory.Exists(configModel.ZipSavePath))
-                    Directory.CreateDirectory(configModel.ZipSavePath);
-                var fileName = $"{dto.SolutionName}.{DateTime.Now:yyy-MM-dd-HH-mm-ss}.zip";
-                var fullName = Path.Combine(configModel.ZipSavePath, fileName);
-                var bs = zipToOpen.ToArray();
-                using (var fs = new FileStream(fullName, FileMode.Create))
-                    fs.Write(bs, 0, bs.Length);
-                return ApiResultModel.FromData(fileName);
             }
+            catch(Exception ex)
+            {
+                return ApiResultModel.FromError(ex.Message);
+            }
+        }
+
+        public IActionResult GetFile(string fn)
+        {
+            var fullName = Path.Combine(configModel.ZipSavePath, fn);
+            var fs = new FileStream(fullName, FileMode.Open);
+            return File(fs, "application/x-zip-compressed", fn, true);
         }
     }
 }

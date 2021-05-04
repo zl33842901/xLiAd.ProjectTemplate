@@ -71,6 +71,7 @@
                         function (data) {
                             if (data.result) {
                                 that.$message("操作成功，稍候将下载。");
+                                window.open("/Home/GetFile?fn=" + data.data);
                             } else {
                                 that.$message.error("出错了：" + data.message);
                             }
