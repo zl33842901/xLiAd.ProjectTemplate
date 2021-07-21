@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using xLiAdProjectTemplate.Entities.Dtos;
 
 namespace xLiAdProjectTemplate.WebApp.Controllers
 {
@@ -23,10 +27,12 @@ namespace xLiAdProjectTemplate.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment _hostingEnvironment)
         {
             _logger = logger;
+            this._hostingEnvironment = _hostingEnvironment;
         }
 
         public IActionResult Index()
@@ -46,6 +52,31 @@ namespace xLiAdProjectTemplate.WebApp.Controllers
         {
             var js = Request.Query["code"].ToString();
             return Content("<script type=\"text/javascript\">" + js + "</script>", "text/html");
+        }
+
+        [AllowAnonymous, RequestSizeLimit(1024_000_000)]
+        public IActionResult Upload()
+        {
+            var files = Request.Form.Files;
+            var file = files.FirstOrDefault();
+            if (file == null)
+            {
+                return Json(ApiResultModel.FromError("未找到上传文件！"));
+            }
+            var path = System.IO.Path.Combine(_hostingEnvironment.WebRootPath, "UploadFiles", DateTime.Now.ToString("yyyy-MM"));
+            if (!System.IO.Directory.Exists(path))
+                System.IO.Directory.CreateDirectory(path);
+            var timeString = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            var ext = System.IO.Path.GetExtension(file.FileName).ToLower();
+            var filename = timeString + ext;
+            var fp = Path.Combine(path, filename);
+            using (var stream = new FileStream(fp, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+            var url = "/UploadFiles/" + DateTime.Now.ToString("yyyy-MM") + "/" + filename;
+            var host = "http://" + Request.Host + url;
+            return Json(new { location = host });
         }
     }
 }

@@ -109,7 +109,7 @@ namespace xLiAdProjectTemplate.WebApp
                 .Where(x => x.Name.EndsWith("service", StringComparison.OrdinalIgnoreCase));
             foreach (var repoType in repoTypes)
             {
-                var inter = repoType.GetInterfaces().Where(x => !x.FullName.StartsWith("xLiAd")).FirstOrDefault();
+                var inter = repoType.GetInterfaces().Where(x => !x.FullName.StartsWith("xLiAd.")).FirstOrDefault();
                 if (inter != null)
                     services.AddScoped(inter, repoType);
             }
