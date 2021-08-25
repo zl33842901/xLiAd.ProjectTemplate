@@ -13,6 +13,10 @@ namespace xLiAd.ProjectFactory.Core
             this.codeLoader = codeLoader;
         }
 
+        public string Id => codeLoader.Id;
+
+        public string Name => codeLoader.Name;
+
         public bool IsProjectPreValid(string projectPre)
         {
             var pattern = "([\\w]+)(\\.([\\w]+)(\\.([\\w]+))?)?";
@@ -84,6 +88,8 @@ namespace xLiAd.ProjectFactory.Core
 
     public interface IConvertService
     {
+        string Id { get; }
+        string Name { get; }
         bool IsProjectPreValid(string projectPre);
         List<FileItem> Convert(string projectPre, Options.OptionsSelect select = null);
     }

@@ -1,10 +1,22 @@
-﻿<el-row style="padding:3px;margin:3px;">
+﻿@inject IConfigModel config
+<el-row style="padding:3px;margin:3px;">
     <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
     </el-breadcrumb>
 </el-row>
 
 <el-row style="width: 100%;margin: 5px 0 5px 0;background-color:#ddd;padding:4px 0 4px 0;" :gutter="10">
+    <el-row :gutter="10" style="margin:10px 0">
+        <el-col :span="5" style="margin-left:10px;">请选择模板类型：</el-col>
+        <el-col :span="8">
+            <el-radio-group v-model="SelectedId" v-on:change="selectIdChanged">
+                @foreach (var item in config.Templates)
+                {
+                    <el-radio label="@item.Id">@item.Name</el-radio>
+                }
+            </el-radio-group>
+        </el-col>
+    </el-row>
     <el-row :gutter="10">
         <el-col :span="5" style="margin-left:10px;">请输入解决方案名称：</el-col>
         <el-col :span="8"><el-input v-model="SolutionName"></el-input></el-col>
@@ -65,7 +77,8 @@
             data: {
                 activeIndex: "activeIndex",
                 tableData: [],
-                SolutionName:'',
+                SolutionName: '',
+                SelectedId:'',
                 @await Html.PartialAsync("CommonData")
             },
             methods: {
@@ -73,7 +86,7 @@
                 GetData: function () {
                     var that = this;
                     CommonAjaxPost("/Home/GetOptionsConfig",
-                        {},
+                        { id: this.SelectedId },
                         function (data) {
                             if (data.result) {
                                 that.tableData = data.data.Items;
@@ -89,6 +102,9 @@
                             }
                         });
                 },
+                selectIdChanged: function () {
+                    this.GetData();
+                },
                 optionchanged: function (index) {
                     Vue.set(this.tableData, index, this.tableData[index])
                 },
@@ -101,7 +117,7 @@
                         });
                     }
                     JsonAjaxPost("/Home/DoConvert",
-                        { SolutionName: this.SolutionName, Items: t },
+                        { SolutionName: this.SolutionName, Items: t, SelectedId: this.SelectedId },
                         function (data) {
                             if (data.result) {
                                 that.$message("操作成功，稍候将下载。");
@@ -114,7 +130,7 @@
             },
             mounted: function () {
                 @await Html.PartialAsync("CommonMounted")
-                this.GetData();
+                //this.GetData();
             }
         });
     </script>

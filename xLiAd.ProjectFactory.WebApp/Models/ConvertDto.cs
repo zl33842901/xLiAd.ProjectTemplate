@@ -8,6 +8,7 @@ namespace xLiAd.ProjectFactory.WebApp.Models
 {
     public class ConvertDto
     {
+        public string SelectedId { get; set; }
         public OptionsSelectItem[] Items { get; set; }
 
         public string SolutionName { get; set; }

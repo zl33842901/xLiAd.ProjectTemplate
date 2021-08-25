@@ -15,10 +15,10 @@ namespace xLiAd.ProjectFactory.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly CodeLoader codeLoader;
-        private readonly IConvertService convertService;
+        private readonly IEnumerable<CodeLoader> codeLoader;
+        private readonly IEnumerable<IConvertService> convertService;
         private readonly IConfigModel configModel;
-        public HomeController(CodeLoader codeLoader, IConvertService convertService, IConfigModel configModel)
+        public HomeController(IEnumerable<CodeLoader> codeLoader, IEnumerable<IConvertService> convertService, IConfigModel configModel)
         {
             this.codeLoader = codeLoader;
             this.convertService = convertService;
@@ -30,9 +30,12 @@ namespace xLiAd.ProjectFactory.WebApp.Controllers
             return View();
         }
 
-        public IApiResultModel GetOptionsConfig()
+        public IApiResultModel GetOptionsConfig(string id)
         {
-            return ApiResultModel.FromData(codeLoader.Options);
+            var cl = codeLoader.Where(x => x.Id == id).FirstOrDefault();
+            if (cl == null)
+                cl = codeLoader.FirstOrDefault();
+            return ApiResultModel.FromData(cl?.Options);
         }
 
         public IApiResultModel DoConvert([FromBody] ConvertDto dto)
@@ -41,7 +44,12 @@ namespace xLiAd.ProjectFactory.WebApp.Controllers
             {
                 return ApiResultModel.FromError("解决方案名称不能为空！");
             }
-            if (!convertService.IsProjectPreValid(dto.SolutionName))
+            var cs = convertService.Where(x => x.Id == dto.SelectedId).FirstOrDefault();
+            if(cs == null)
+            {
+                return ApiResultModel.FromError("请选择有效的模板类型！");
+            }
+            if (!cs.IsProjectPreValid(dto.SolutionName))
             {
                 return ApiResultModel.FromError("解决方案名称不合法，请更换！");
             }
@@ -55,7 +63,7 @@ namespace xLiAd.ProjectFactory.WebApp.Controllers
             };
             try
             {
-                var fileItems = convertService.Convert(dto.SolutionName, optionsSelect);
+                var fileItems = cs.Convert(dto.SolutionName, optionsSelect);
                 using (MemoryStream zipToOpen = new MemoryStream())
                 {
                     using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Create))

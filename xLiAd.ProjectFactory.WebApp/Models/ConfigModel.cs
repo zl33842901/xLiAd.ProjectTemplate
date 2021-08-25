@@ -7,15 +7,21 @@ namespace xLiAd.ProjectFactory.WebApp.Models
 {
     public class ConfigModel : IConfigModel
     {
+        public TemplateModel[] Templates { get; set; }
+        public string ZipSavePath { get; set; }
+    }
+
+    public class TemplateModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
         public string SolutionPath { get; set; }
         public string ProjectPre { get; set; }
-        public string ZipSavePath { get; set; }
     }
 
     public interface IConfigModel
     {
-        string SolutionPath { get; }
-        string ProjectPre { get; }
+        TemplateModel[] Templates { get; }
         string ZipSavePath { get; }
     }
 }

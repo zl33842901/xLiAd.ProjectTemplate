@@ -28,14 +28,14 @@ namespace xLiAd.ProjectFactory.WebApp
             var conf = Configuration.Get<ConfigModel>();
             services.Configure<ConfigModel>(Configuration);
             services.AddScoped<IConfigModel>(x => x.GetService<IOptionsSnapshot<ConfigModel>>().Value);
-            services.AddSingleton<CodeLoader>(x =>
+            services.AddSingleton<IEnumerable<CodeLoader>>(x =>
             {
-                return new CodeLoader(conf.SolutionPath, conf.ProjectPre);
+                return conf.Templates.Select(item => new CodeLoader(item.SolutionPath, item.ProjectPre, item.Id, item.Name));
             });
-            services.AddSingleton<IConvertService>(x =>
+            services.AddSingleton<IEnumerable<IConvertService>>(x =>
             {
-                var codeLoader = x.GetService<CodeLoader>();
-                return new ConvertService(codeLoader);
+                var codeLoaders = x.GetService<IEnumerable<CodeLoader>>();
+                return codeLoaders.Select(x => new ConvertService(x));
             });
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation().AddNewtonsoftJson(opt =>

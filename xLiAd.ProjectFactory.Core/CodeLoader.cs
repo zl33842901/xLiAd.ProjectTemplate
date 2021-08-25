@@ -16,8 +16,12 @@ namespace xLiAd.ProjectFactory.Core
         public string ProjectPre { get; }
         private readonly List<FileItem> fileItems;
         public readonly Options.OptionsModel Options;
-        public CodeLoader(string codeSolutionPath, string projectPre)
+        public string Id { get; }
+        public string Name { get; }
+        public CodeLoader(string codeSolutionPath, string projectPre, string id = "", string name = "")
         {
+            this.Id = id;
+            this.Name = name;
             ProjectPre = projectPre;
             var dict = new System.IO.DirectoryInfo(codeSolutionPath);
             var subFolders = dict.GetDirectories();
