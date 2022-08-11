@@ -3,6 +3,7 @@
 ################################################################################
 
 /.vs
+*.user
 /xLiAd.ProjectFactory.Core/bin/Debug/netstandard2.0
 /xLiAd.ProjectFactory.Core/obj
 /xLiAd.ProjectFactory.Core.Test/bin/Debug/net461

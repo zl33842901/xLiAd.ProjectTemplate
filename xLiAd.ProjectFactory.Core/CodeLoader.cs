@@ -62,7 +62,7 @@ namespace xLiAd.ProjectFactory.Core
         {
             foreach(var folder in directoryInfo.GetDirectories())
             {
-                if (folder.Name.Equals("bin", StringComparison.OrdinalIgnoreCase) || folder.Name.Equals("obj", StringComparison.OrdinalIgnoreCase))
+                if (folder.Name.Equals("bin", StringComparison.OrdinalIgnoreCase) || folder.Name.Equals("obj", StringComparison.OrdinalIgnoreCase) || folder.Name.Equals(".svn", StringComparison.OrdinalIgnoreCase))
                     continue;
                 foreach (var item in ProcessFolder(folder, inPath + "/" + folder.Name))
                     yield return item;
